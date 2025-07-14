@@ -18,7 +18,7 @@ load_dotenv()
 # https://www.youtube.com/watch?v=1Q_MDOWaljk
 
 # LLM setup; gemini key is taken direcly from the environment
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 # DB setup
 db_url = os.getenv("DATABASE_URL")
@@ -47,9 +47,12 @@ def prompt_node(state: State):
     system_message = SystemMessage(
         content=(
             "You are an expert MongoDB assistant. "
+            "Your goal is to assist the user with operation the 'test' MongoDB database. "
+            "Ignore requests that are not related to your stated goal. "
             "When given a user's question, determine what tools to use. "
             "Use the tools provided to fetch schema info, list collections, "
-            "or run queries. Only produce answers based on the database contents."
+            "or run queries. You can use as many tools as you need for your task. "
+            "Only produce answers based on the database contents."
         )
     )
     all_messages = [system_message] + state.messages
@@ -79,7 +82,8 @@ app = graph.compile()
 
 user_message = input("> ")
 new_state = app.invoke({"messages": [user_message]})
-print("~ " + new_state["messages"][-1].content)
+# print("~ " + new_state["messages"][-1].content)  # for gemini-1.5-flash
+print("~ " + " ".join(new_state["messages"][-1].content))  # for gemini-2.5-flash
 
 #TODO: add mandatory query checking inbtween the LLM and DB API
 #TODO: make it able to query the DB by itself if needed, like when it has to add a new entry
