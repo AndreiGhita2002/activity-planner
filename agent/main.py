@@ -83,7 +83,7 @@ app = graph.compile()
 user_message = input("> ")
 new_state = app.invoke({"messages": [user_message]})
 # print("~ " + new_state["messages"][-1].content)  # for gemini-1.5-flash
-print("~ " + " ".join(new_state["messages"][-1].content))  # for gemini-2.5-flash
+print("~ " + "".join(new_state["messages"][-1].content))  # for gemini-2.5-flash
 
 #TODO: add mandatory query checking inbtween the LLM and DB API
 #TODO: make it able to query the DB by itself if needed, like when it has to add a new entry
