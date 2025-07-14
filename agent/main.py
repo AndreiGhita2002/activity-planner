@@ -80,3 +80,7 @@ app = graph.compile()
 user_message = input("> ")
 new_state = app.invoke({"messages": [user_message]})
 print("~ " + new_state["messages"][-1].content)
+
+#TODO: add mandatory query checking inbtween the LLM and DB API
+#TODO: make it able to query the DB by itself if needed, like when it has to add a new entry
+#TODO: make it be able to ask the user follow up questions for clarification
